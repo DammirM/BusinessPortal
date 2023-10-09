@@ -8,19 +8,21 @@ namespace BusinessPortal.EndPoint_s
 {
     public static class PersonEnpoints
     {
-        public static void ConfigurePersonEndpoints(this WebApplication app)
+        public static void ConfigurePersonalEndpoints(this WebApplication app)
         {
-            app.MapGet("api/GetAllPersons", GetAllPersons).WithName("GetAllPersons")
+            app.MapGet("api/GetAllPersonal", GetAllPersons).WithName("GetAll")
+                .Produces<ApiResponse>(200).Produces<ApiResponse>(404);
+            app.MapDelete("api/GetSinglePersonal", GetSinglePerson).WithName("GetSingle")
                 .Produces<ApiResponse>(200).Produces<ApiResponse>(404);
 
             app.MapDelete("api/DeletePerson", DeletePerson);
         }
 
-        private async static Task<IResult> GetAllPersons(IRepository<Personal> personRepo)
+        private async static Task<IResult> GetAllPersons(IRepository<Personal> personalRepo)
         {
             ApiResponse response = new ApiResponse() {IsSuccess = false,  StatusCode = System.Net.HttpStatusCode.NotFound};
 
-            var persons = await personRepo.GetAll();
+            var persons = await personalRepo.GetAll();
             if (persons.Any())
             {
                 response.IsSuccess = true;
@@ -31,6 +33,28 @@ namespace BusinessPortal.EndPoint_s
 
             return Results.NotFound(response);
         }
+
+        private async static Task<IResult> GetSinglePerson(IRepository<Personal> personalRepo, int id)
+        {
+            ApiResponse response = new ApiResponse() { IsSuccess = false, StatusCode = System.Net.HttpStatusCode.NotFound };
+
+            var person = await personalRepo.GetById(id);
+            if(person != null)
+            {
+                response.IsSuccess = true;
+                response.Data = person;
+                response.StatusCode = System.Net.HttpStatusCode.OK;
+
+                return Results.Ok(response);
+            }
+
+            return Results.NotFound(response);
+        }
+
+        //private async static Task<IResult> CreateNewPersonal()
+        //{
+
+        //}
 
         private async static Task<IResult> DeletePerson(IRepository<Personal> personRepo, int id)
         {

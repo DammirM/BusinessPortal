@@ -40,7 +40,7 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionToDB")
 
             app.UseAuthorization();
 
-            app.ConfigurePersonEndpoints();
+            app.ConfigurePersonalEndpoints();
             app.Run();
         }
     }
