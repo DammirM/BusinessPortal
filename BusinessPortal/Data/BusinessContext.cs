@@ -11,7 +11,6 @@ namespace BusinessPortal.Data
 
         }
 
-
         public DbSet<Personal> Personals { get; set; }
         public DbSet<Request> Requests { get; set; }
         public DbSet<RequestType> RequestTypes { get; set; }
