@@ -1,5 +1,6 @@
 ﻿using BusinessPortal.Data;
 using BusinessPortal.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusinessPortal.IRepository
 {
@@ -12,34 +13,34 @@ namespace BusinessPortal.IRepository
         {
             this._db = db;
         }
-        public Task Create(Request t)
+        public async Task Create(Request t)
         {
-            throw new NotImplementedException();
+            _db.Requests.Add(t);
         }
 
-        public Task Delete(Request t)
+        public async Task Delete(Request t)
         {
-            throw new NotImplementedException();
+            _db.Requests.Remove(t);
         }
 
-        public Task<IEnumerable<Request>> GetAll()
+        public async Task<IEnumerable<Request>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _db.Requests.ToListAsync();
         }
 
-        public Task<Request> GetById(int id)
+        public async Task<Request> GetById(int id)
         {
-            throw new NotImplementedException();
+            return await _db.Requests.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public Task Save()
+        public async Task Save()
         {
-            throw new NotImplementedException();
+            await _db.SaveChangesAsync();
         }
 
-        public Task Update(Request t)
+        public async Task Update(Request t)
         {
-            throw new NotImplementedException();
+            _db.Requests.Update(t);
         }
     }
 }

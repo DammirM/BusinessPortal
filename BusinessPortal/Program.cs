@@ -22,6 +22,7 @@ namespace BusinessPortal
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddScoped<IRepository<Personal>, PersonalRepository>();
+            builder.Services.AddScoped<IRepository<Request>, RequestRepository>();
             builder.Services.AddAutoMapper(typeof(MappingConfig));
 
             //FluentValidations Service
@@ -44,6 +45,7 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionToDB")
 
             app.UseAuthorization();
 
+            app.ConfigureRequestEndPoints();
             app.ConfigurePersonalEndpoints();
             app.Run();
         }
