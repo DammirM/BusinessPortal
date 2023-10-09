@@ -11,9 +11,9 @@ namespace BusinessPortal.IRepository
         {
             this._db = db;
         }
-        public Task Create(Personal t)
+        public async Task Create(Personal t)
         {
-            throw new NotImplementedException();
+            _db.Add(t);
         }
 
         public Task Delete(Personal t)
