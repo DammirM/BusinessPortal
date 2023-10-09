@@ -1,3 +1,7 @@
+using BusinessPortal.Data;
+using Microsoft.EntityFrameworkCore;
+using System;
+
 namespace BusinessPortal
 {
     public class Program
@@ -12,6 +16,11 @@ namespace BusinessPortal
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+
+            builder.Services.AddDbContext<BusinessContext>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionToDB")));
+
 
             var app = builder.Build();
 
