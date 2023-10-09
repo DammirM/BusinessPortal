@@ -2,6 +2,8 @@ using BusinessPortal.Data;
 using BusinessPortal.EndPoint_s;
 using BusinessPortal.IRepository;
 using BusinessPortal.Models;
+using FluentValidation;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -20,8 +22,10 @@ namespace BusinessPortal
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddScoped<IRepository<Personal>, PersonalRepository>();
-           
+            builder.Services.AddAutoMapper(typeof(MappingConfig));
 
+            //FluentValidations Service
+            builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
             builder.Services.AddDbContext<BusinessContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionToDB")));
