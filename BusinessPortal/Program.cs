@@ -20,7 +20,7 @@ namespace BusinessPortal
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddScoped<IRepository<Personal>, PersonalRepository>();
-            builder.Services.AddHttpClient();
+           
 
 
             builder.Services.AddDbContext<BusinessContext>(options =>
