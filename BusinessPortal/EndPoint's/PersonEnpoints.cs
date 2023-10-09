@@ -129,6 +129,6 @@ namespace BusinessPortal.EndPoint_s
                 return Results.BadRequest(response);
             }
 
-        }
-    }
+            }
+    }   
 }
