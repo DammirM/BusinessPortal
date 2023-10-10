@@ -7,6 +7,7 @@ using BusinessPortal.DTO_s;
 using AutoMapper;
 using FluentValidation;
 using BusinessPortal.Validations;
+using BusinessPortal.Models.DTO_s;
 
 namespace BusinessPortal.EndPoint_s
 {
@@ -17,7 +18,7 @@ namespace BusinessPortal.EndPoint_s
             app.MapGet("api/GetAllPersonal", GetAllPersons).WithName("GetAll")
                 .Produces<ApiResponse>(200).Produces<ApiResponse>(404);
 
-            app.MapDelete("api/GetSinglePersonal", GetSinglePerson).WithName("GetSingle")
+            app.MapGet("api/GetPersonalById/{id:int}", GetSinglePerson).WithName("GetSingle")
                 .Produces<ApiResponse>(200).Produces<ApiResponse>(404);
 
             app.MapPost("api/CreateNewPersonal", CreateNewPersonal).WithName("NewPersonal")
@@ -86,12 +87,19 @@ namespace BusinessPortal.EndPoint_s
             return Results.Ok(response);
         }
 
-        private async static Task<IResult> UpdatePersonal([FromServices] IRepository<Personal> personalRepo,
-            [FromServices] IValidator<PersonalValidation> _validator, [FromBody] Personal personal)
+        private async static Task<IResult> UpdatePersonal([FromServices] IRepository<Personal> personalRepo, IMapper _mapper,
+            [FromServices] IValidator<PersonalUpdateValidation> _validator, [FromBody] PersonalUpdateDTO p_Update_DTO)
         {
             ApiResponse response = new ApiResponse() { IsSuccess = false, StatusCode = System.Net.HttpStatusCode.NotFound };
 
-            var result = _validator.Validate((IValidationContext)personal); // Take a closer look
+            if(personalRepo.GetById(p_Update_DTO.Id) == null)
+            {
+                response.ErrorMessages.Add("Invalid Personal Id!");
+
+                return Results.Ok(response);
+            }
+
+            var result = _validator.Validate((IValidationContext)p_Update_DTO);
             if (!result.IsValid)
             {
                 foreach (var item in result.Errors)
@@ -102,15 +110,15 @@ namespace BusinessPortal.EndPoint_s
                 Results.BadRequest(response);
             }
 
-            await personalRepo.Update(personal);
+            await personalRepo.Update(_mapper.Map<Personal>(p_Update_DTO));
             await personalRepo.Save();
             response.IsSuccess = true;
             response.StatusCode = System.Net.HttpStatusCode.Created;
             return Results.Ok(response);
         }
 
-            private async static Task<IResult> DeletePerson(IRepository<Personal> personRepo, int id)
-            {
+        private async static Task<IResult> DeletePerson(IRepository<Personal> personRepo, int id)
+        {
             ApiResponse response = new() { IsSuccess = false, StatusCode = HttpStatusCode.BadRequest };
 
             Personal PersonFromDb = await personRepo.GetById(id);
@@ -129,6 +137,6 @@ namespace BusinessPortal.EndPoint_s
                 return Results.BadRequest(response);
             }
 
-            }
+        }
     }   
 }

@@ -2,7 +2,6 @@
 {
     public class RequestUpdateDTO
     {
-
         public int Id { get; set; }
         public int RequestTypeId { get; set; }
         public DateTime Period { get; set; }
