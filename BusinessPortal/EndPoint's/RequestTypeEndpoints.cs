@@ -14,12 +14,16 @@ namespace BusinessPortal.EndPoint_s
         {
             app.MapGet("api/GetAllRequestTypes", GetAllTypes).WithName("GetAllTypes").Produces<ApiResponse>(200)
                 .Produces<ApiResponse>(404);
+
             app.MapGet("api/GetRequestTypeById/{id:int}", GetTypeById).WithName("GetSingleRequestType")
                 .Produces<ApiResponse>(200).Produces<ApiResponse>(404);
+
             app.MapPost("api/CreateNewRequestType", CreateNewType).WithName("NewRequestType")
                 .Produces<ApiResponse>(201).Produces<ApiResponse>(400);
+
             app.MapPut("api/UpdateRequestType", UpdateRequestType).WithName("UpdateRequestType")
                 .Produces<ApiResponse>(200).Produces<ApiResponse>(400);
+
             app.MapDelete("api/DeleteRequestType/{id:int}", DeleteType).WithName("DeleteRequestType")
                 .Produces<ApiResponse>(200).Produces<ApiResponse>(400);
         }
@@ -105,13 +109,12 @@ namespace BusinessPortal.EndPoint_s
                 return Results.Ok(response);
             }
         }
-
-            private async static Task<IResult> DeleteType(IRepository<RequestType> typeRepo, int id)
-            {
+        private async static Task<IResult> DeleteType(IRepository<RequestType> typeRepo, int id)
+        {
             ApiResponse response = new ApiResponse() { IsSuccess = false, StatusCode = System.Net.HttpStatusCode.BadRequest };
 
             var toDelete = await typeRepo.GetById(id);
-            if(toDelete != null)
+            if (toDelete != null)
             {
                 await typeRepo.Delete(toDelete);
                 await typeRepo.Save();
