@@ -5,7 +5,6 @@ namespace BusinessPortal.Validations
 {
     public class CreateRequestValidation : AbstractValidator<RequestCreateDTO>
     {
-
         public CreateRequestValidation()
         {
             RuleFor(model => model.RequestTypeId).InclusiveBetween(1, 3);
