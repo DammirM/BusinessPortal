@@ -23,6 +23,7 @@ namespace BusinessPortal
             builder.Services.AddSwaggerGen();
             builder.Services.AddScoped<IRepository<Personal>, PersonalRepository>();
             builder.Services.AddScoped<IRepository<Request>, RequestRepository>();
+            builder.Services.AddScoped<IRepository<RequestType>, RequestTypeRepository>();
             builder.Services.AddAutoMapper(typeof(MappingConfig));
 
             //FluentValidations Service

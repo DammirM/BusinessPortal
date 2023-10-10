@@ -15,7 +15,7 @@ namespace BusinessPortal.IRepository
         }
         public async Task Create(Personal t)
         {
-            _db.Personals.Add(t);
+            await _db.Personals.AddAsync(t);
         }
 
         public async Task Delete(Personal t)

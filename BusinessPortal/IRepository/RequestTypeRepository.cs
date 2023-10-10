@@ -1,5 +1,6 @@
 ﻿using BusinessPortal.Data;
 using BusinessPortal.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusinessPortal.IRepository
 {
@@ -10,36 +11,36 @@ namespace BusinessPortal.IRepository
 
         public RequestTypeRepository(BusinessContext db)
         {
-            this._db= db;
+            this._db = db;
         }
-        public Task Create(RequestType t)
+        public async Task Create(RequestType t)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task Delete(RequestType t)
-        {
-            throw new NotImplementedException();
+            await _db.AddAsync(t);
         }
 
-        public Task<IEnumerable<RequestType>> GetAll()
+        public async Task Delete(RequestType t)
         {
-            throw new NotImplementedException();
+            _db.Remove(t);
         }
 
-        public Task<RequestType> GetById(int id)
+        public async Task<IEnumerable<RequestType>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _db.RequestTypes.ToListAsync();
         }
 
-        public Task Save()
+        public async Task<RequestType> GetById(int id)
         {
-            throw new NotImplementedException();
+            return await _db.RequestTypes.FirstOrDefaultAsync(t => t.Id == id);
         }
 
-        public Task Update(RequestType t)
+        public async Task Save()
         {
-            throw new NotImplementedException();
+            await _db.SaveChangesAsync();
+        }
+
+        public async Task Update(RequestType t)
+        {
+            _db.Update(t);
         }
     }
 }
