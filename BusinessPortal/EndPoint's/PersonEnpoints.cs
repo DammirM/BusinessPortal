@@ -27,7 +27,7 @@ namespace BusinessPortal.EndPoint_s
             app.MapPut("api/UpdatePersonal", UpdatePersonal).WithName("UpdatePersonal")
                 .Produces<ApiResponse>(200).Produces<ApiResponse>(400);
 
-            app.MapDelete("api/DeletePerson", DeletePerson).WithName("DeletePersonal")
+            app.MapDelete("api/DeletePerson/{id:int}", DeletePerson).WithName("DeletePersonal")
                 .Produces<ApiResponse>(200).Produces<ApiResponse>(400);
         }
 
@@ -128,7 +128,7 @@ namespace BusinessPortal.EndPoint_s
             }
             else
             {
-                response.ErrorMessages.Add("INvalid ID");
+                response.ErrorMessages.Add("Invalid ID");
                 return Results.BadRequest(response);
             }
 
