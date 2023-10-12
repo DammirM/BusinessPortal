@@ -2,8 +2,8 @@
 {
     public class RequestTypeCreateDTO
     {
-        public string Vabb { get; set; }
-        public string Sick { get; set; }
-        public string Vacation { get; set; }
+        public int  Vabb { get; set; }
+        public int Sick { get; set; }
+        public int Vacation { get; set; }
     }
 }

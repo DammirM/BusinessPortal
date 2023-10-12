@@ -18,6 +18,16 @@ namespace BusinessPortal
             // Add services to the container.
             builder.Services.AddAuthorization();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("CORSPolicy", builder =>
+                {
+                    builder.AllowAnyMethod();
+                    builder.AllowAnyHeader();
+                    builder.WithOrigins("http://localhost:3000");
+                });
+            });
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -44,8 +54,8 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionToDB")
 
             app.UseHttpsRedirection();
 
+            app.UseCors("CORSPolicy");
             app.UseAuthorization();
-
             app.ConfigureRequestEndPoints();
             app.ConfigurePersonalEndpoints();
             app.Run();

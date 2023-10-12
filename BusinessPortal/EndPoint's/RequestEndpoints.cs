@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BusinessPortal.Data;
 using BusinessPortal.DTO_s;
 using BusinessPortal.IRepository;
 using BusinessPortal.Models;
@@ -6,7 +7,9 @@ using BusinessPortal.Models.DTO_s;
 using BusinessPortal.Validations;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
+using System.Net.NetworkInformation;
 
 namespace BusinessPortal.EndPoint_s
 {
@@ -31,6 +34,8 @@ namespace BusinessPortal.EndPoint_s
 
             app.MapDelete("api/DeleteRequest/{id:int}", DeleteRequest).WithName("DeleteRequest")
                 .Produces<ApiResponse>(200).Produces<ApiResponse>(400);
+
+            app.MapGet("api/GetByIdFiltered/{id:int}", GetAllWithIdFilter);
         }
 
         private async static Task<IResult> GetAllRequests(IRepository<Request> repo)
@@ -132,9 +137,6 @@ namespace BusinessPortal.EndPoint_s
             return Results.Ok(response);
         }
 
-
-
-
         private async static Task<IResult> DeleteRequest(IRepository<Request> repo, int id)
         {
             ApiResponse response = new() { IsSuccess = false, StatusCode = HttpStatusCode.BadRequest };
@@ -154,7 +156,23 @@ namespace BusinessPortal.EndPoint_s
                 response.ErrorMessages.Add("ID Missing");
                 return Results.BadRequest(response);
             }
+        }
 
+        private async static Task<IResult> GetAllWithIdFilter( BusinessContext _db, int id)
+        {
+            ApiResponse response = new() { IsSuccess = false, StatusCode = HttpStatusCode.NotFound };
+
+            var result = await _db.Requests.Where(x => x.PersonalId == id).ToListAsync();
+
+            if (result.Any())
+            {
+                response.IsSuccess = true;
+                response.Data = result;
+
+                return Results.Ok(response);
+            }
+
+            return Results.NotFound(response);
         }
     }
 }
