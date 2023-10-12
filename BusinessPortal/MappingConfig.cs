@@ -13,6 +13,7 @@ namespace BusinessPortal
             CreateMap<Personal, PersonalUpdateDTO>().ReverseMap();
             CreateMap<RequestType, RequestTypeCreateDTO>().ReverseMap();
             CreateMap<RequestType, RequestTypeUpdateDTO>().ReverseMap();
+            CreateMap<RequestCreateDTO, Request>().ReverseMap();
         }
     }
 }

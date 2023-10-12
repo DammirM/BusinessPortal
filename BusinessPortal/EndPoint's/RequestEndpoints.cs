@@ -67,7 +67,7 @@ namespace BusinessPortal.EndPoint_s
         }
 
         private async static Task<IResult> CreateNewRequest([FromBody] RequestCreateDTO Request_DTO, [FromServices] IMapper _mapper,
-    [FromServices] IRepository<Request> repo, [FromServices] IValidator<RequestCreateDTO> _validator)
+        [FromServices] IRepository<Request> repo, [FromServices] IValidator<RequestCreateDTO> _validator)
         {
             ApiResponse response = new ApiResponse() { IsSuccess = false, StatusCode = System.Net.HttpStatusCode.NotFound };
 
